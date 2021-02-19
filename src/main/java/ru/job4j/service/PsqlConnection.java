@@ -4,11 +4,8 @@ import org.apache.commons.dbcp2.BasicDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Properties;
@@ -27,7 +24,6 @@ public class PsqlConnection {
         } catch (IOException e) {
             LOG.error("IOException: ", e);
         }
-        System.out.println("path To the properties=" + cfg.values());
         try {
             Class.forName(cfg.getProperty("jdbc.driver"));
         } catch (ClassNotFoundException e) {
