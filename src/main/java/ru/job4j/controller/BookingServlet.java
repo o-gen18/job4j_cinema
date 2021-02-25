@@ -18,10 +18,7 @@ public class BookingServlet extends HttpServlet {
         int row = Integer.parseInt(req.getParameter("row"));
         int seat = Integer.parseInt(req.getParameter("seat"));
         if (!PsqlStore.instOf().bookPlace(name, tel, row, seat)) {
-            //До самой страницы почему-то не доходят параметры, которые я передаю в строке ниже
-            resp.sendRedirect("payment.jsp?row=" + row + "&seat=" + seat + "&err=1");
-        } else {
-            resp.sendRedirect("index.html");
+            resp.sendError(500);
         }
     }
 }

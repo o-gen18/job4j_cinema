@@ -80,19 +80,26 @@ public class PsqlStore {
 
     public boolean bookPlace(String username, String phone, int row, int seat) {
         try (Connection cn = pool.getConnection()) {
-            return saveUser(cn, username, phone) && savePlace(cn, row, seat, phone);
+            cn.setAutoCommit(false);
+            return saveUser(cn, username, phone, row, seat);
         } catch (SQLException e) {
             LOG.error("Exception occurred", e);
             return false;
         }
     }
 
-    private boolean saveUser(Connection cn, String name, String phone) {
+    private boolean saveUser(Connection cn, String name, String phone, int row, int seat) {
         try (PreparedStatement ps = cn.prepareStatement(
                 "INSERT INTO accounts(name, phone) values (?, ?)")) {
             ps.setString(1, name);
             ps.setString(2, phone);
-            return ps.executeUpdate() == 1;
+            ps.execute();
+            if (!savePlace(cn, row, seat, phone)) {
+                cn.rollback();
+                return false;
+            }
+            cn.commit();
+            return true;
         } catch (SQLException e) {
             LOG.error("Exception occurred while inserting into accounts", e);
             return false;

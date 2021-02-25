@@ -52,7 +52,8 @@
             var value = chosen.getAttribute('value');
             var row = value.charAt(0);
             var seat = value.charAt(1);
-            window.location.assign('http://localhost:8080/cinema/payment.jsp?row=' + row + '&seat=' + seat);
+            window.open('http://localhost:8080/cinema/payment.jsp?row=' + row + '&seat=' + seat,
+                "window","width=700,height=400").moveTo(200, 200);
         }
     }
 

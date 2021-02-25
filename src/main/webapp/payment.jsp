@@ -25,16 +25,12 @@
 
     $('document').ready(function () {
         var params = getParams();
-        alert('Params=' + params);
-        alert('err=' + params[2]);
         document.getElementById('header').innerHTML = 'Вы выбрали ряд ' + params[0] + ' место ' + params[1] + ', сумма: 500 рублей';
-        if (params[3] !== undefined) {
-            document.getElementById('header').appendChild(document.createTextNode(
-                "Ошибка! Такой номер уже есть в базе, введите другой!"));
-        }
     });
 
     function validate() {
+        var row = getParams()[0];
+        var seat = getParams()[1];
         var username = $('#username').val();
         var phone = $('#phone').val();
         if (username === '' || phone === '') {
@@ -50,10 +46,18 @@
             data: {
                 username: username,
                 phone: phone,
-                row: getParams()[0],
-                seat: getParams()[1]},
-            dataType: 'json'
+                row: row,
+                seat: seat},
+            success: function(msg){
+                alert( "Данные сохранены!");
+                window.close();
+                window.location.assign('http://localhost:8080/cinema');
+            },
+            error: function(XHRequest, textStatus, errorThrown) {
+                alert('Укажите другой номер! Такой уже есть в базе!');
+            }
         });
+        return false;
     }
 </script>
 
